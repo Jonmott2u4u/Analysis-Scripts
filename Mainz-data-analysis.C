@@ -11,10 +11,10 @@ Double_t langaufun(Double_t *x, Double_t *par);
 
 void FitLanGaus()
 {
-	//ifstream rfiles("R5_horizontal_scans.dat"); //Reads a .dat file listing all the .dat files to be analyzed
-	ifstream rfiles("runs/ch02_21969_22084.dat");
+	//ifstream rfiles("runs/ch03_21959_21967.dat"); //Reads a .dat file listing all the .dat files to be analyzed
+	ifstream rfiles("runs/test.dat");
 	ofstream Mainz_dat;
-	Mainz_dat.open ("analyzed_data/ch02_21969_22084.txt"); //Opens a text file that stores the mean and sigma of the data (with and without a fit)
+	Mainz_dat.open ("analyzed_data/test.txt"); //Opens a text file that stores the mean and sigma of the data (with and without a fit)
 	string line;
 	while(getline(rfiles, line)){
 
@@ -25,6 +25,7 @@ void FitLanGaus()
 	getline(inFile,line2);
 
 	int k=0;
+	double binmax, binmaxpos;
 	double charge;
 	double mean,mpv,gsigma,mpv2,gsigma2;
 	double pe_langau,pe_gaus;
@@ -58,8 +59,12 @@ void FitLanGaus()
 
 	//***Use the below values if not using PMT gain in your analysis***
 	//double pedestal = peak of pedestal; //Name of PMT + base combination, voltage used, channel number
-	//double pedestal = 517.;			//ET 9305QKB #615 + BT-01, 950 V, ch03, Ring 5 BF
-	double pedestal = 540.;				//JLab ET (likely 9305QKB) + JLab base (Jie custom), 900 V, ch02, Ring 1 FF
+	//double pedestal = 442., cut = 10 + pedestal;		//ET 9305QKB #616 + BT-06, 900 V, ch00, Ring 2 FF
+	//double pedestal = 444., cut = 30 + pedestal;		//ET 9305QKB #542 + BT-04, 850 V, ch01, Ring 3 FF
+	//double pedestal = 540., cut = 10 + pedestal;		//JLab ET (likely 9305QKB) + JLab base (Jie custom), 900 V, ch02, Ring 1 FF
+	//double pedestal = 516., cut = 10 + pedestal;		//ET 9305QKB #615 + BT-01, 950 V, ch03, Ring 5 BF, cut may be higher
+	//double pedestal = 500., cut = 30 + pedestal;		//ET 9305QKB #539 + BT-02, 975 V, ch04, Ring 4 FF - Runs 21959->22084 have double pedestal. 500 is between both ped peaks
+	double pedestal = 0., cut = 0 + pedestal;			//Use to see unedited spectrum
 
 
 	//double gainFactor = gainADC / (gainPMT * gainAmp * Q); //***Use if doing analysis with gain***
@@ -69,7 +74,7 @@ void FitLanGaus()
     TH1F* pulseHist = new TH1F("pulseHeight","",4096, minChannel*gainFactor, maxChannel*gainFactor);
 
     double counts;
-	double cut = 6 + pedestal; 								 //Cuts a section of the final plot out
+	//double cut = 30 + pedestal; 								 //Cuts a section of the final plot out
     for(int i = 1; i <= 4096; i++) {
 		inFile >> counts;
 		if (i*gainFactor >= pedestal) {
@@ -81,13 +86,17 @@ void FitLanGaus()
 			k++;
 		}
 	}
-	//pulseHist->Scale(1./(pulseHist->Integral()));
-	//pulseHist->Scale(1./114000.);
+	
+	//Gets the height of the maximum point (the pedestal, pulse, etc) of the histogram
+	binmaxpos = pulseHist->GetMaximumBin();
+	binmax = pulseHist->GetBinContent(binmaxpos);
+	cout<<"MaxHeight: "<<binmax<<"  MaxHeightPos: "<<binmaxpos<<endl;
+
 
 	TString run_number;
     run_number = line;
-    run_number = run_number.ReplaceAll("data/ch02/run_",""); //Pulls the run number from the list of files
-    run_number = run_number.ReplaceAll("_ch02.dat",""); 	       
+    run_number = run_number.ReplaceAll("data/ch04/run_",""); //Pulls the run number from the list of files
+    run_number = run_number.ReplaceAll("_ch04.dat",""); 	       
 	
 
 	//TString langau_number; TString gaus_number; TString og_number;
@@ -147,12 +156,12 @@ void FitLanGaus()
 	pulseHist2->Draw();
 	pulseHist2->SetTitle("Gaussian fit [run " + run_number + "]");
 	pulseHist2->GetXaxis()->SetRangeUser(0,1000);
-	multi_plot->SaveAs("plots/ch02_21969_22084/" + run_number + ".png");
+	multi_plot->SaveAs("plots/test/" + run_number + ".png");
 	multi_plot->Close();
 
 	Mainz_dat << "Run: " << run_number << "		";
 	//Mainz_dat << "Mean: " << mean << " " << "RMS: " << sigma << "      " << "mpv: " << mpv2 << "     " << "gsigma: " << gsigma2 << "\n\n";
-	Mainz_dat << "Langau MP: " << mpv << " " << "Langau gsigma: " << gsigma << "Langau PEs: " << pe_langau << "		" << "Gaussian MP: " << mpv2 << " " << "Gaussian gsigma: " << gsigma2 << "Gaussian PEs: " << pe_gaus << "\n\n";
+	Mainz_dat << "Langau MP: " << mpv << " " << "Langau gsigma: " << gsigma << " " << "Langau PEs: " << pe_langau << "		" << "Gaussian MP: " << mpv2 << " " << "Gaussian gsigma: " << gsigma2 << " " << "Gaussian PEs: " << pe_gaus << "\n\n";
 	
 	} //Ends the while loop that reads files.dat
 	Mainz_dat.close();

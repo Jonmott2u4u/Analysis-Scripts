@@ -6,8 +6,8 @@ ch_start = 0    #QDC channel number
 ch_stop = 4
 ch_step = 1
 
-run_start = 21969
-run_stop = 22084
+run_start = 21869
+run_stop = 21882
 run_step = 1
 
 
