@@ -1,0 +1,3 @@
+cosmics.dat contains the energy of cosmic muons at particular elevation levels. Each energy is recorded a number of times equal to the ratio of it's flux to the minimum flux (which is for the highest energy muons)
+
+cosmics.txt contains that info in a form that can be parsed by the getw & putw commands
