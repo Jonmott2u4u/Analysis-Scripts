@@ -22,7 +22,7 @@ void ExtractScanResults()
   //std::ofstream ring_dat;       //Opens a txt file where info like mean PE's is stored. Was added to create data formatted for a specific script
   //ring_dat.open ("sim_R3.txt"); //Change the name to match the ring being analyzed, otherwise files will be overwritten
 
-  std::ifstream rfiles("file.dat");
+  std::ifstream rfiles("r6.dat");
   std::string line;
   TFile *file;
 
@@ -59,13 +59,13 @@ void ExtractScanResults()
     runID = 0003;      
     
     param_run = param + counter*param_step;
-    
-    tmp = (TH1D*)file->Get("R1Only_CathodeEventsDistrHist");  //Loads a histogram associated with a ring of the user's choice
+
+    tmp = (TH1D*)file->Get("R8_CathodeEventsDistrHist");  //Loads a histogram associated with a ring of the user's choice
     
     hst = (TH1D*)tmp->Clone(Form("CEH_%s",runID.Data()));
     hst->SetTitle("Photoelectron Distribution");
     hst->GetXaxis()->SetTitle("Photoelectrons");
-    hst->GetXaxis()->SetRangeUser(1,100);
+    hst->GetXaxis()->SetRangeUser(0,100);
     hst->SetDirectory(0);
 
     m = FindGraph(fa,hr);
