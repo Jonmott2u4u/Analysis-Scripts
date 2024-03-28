@@ -95,7 +95,7 @@ void ExtractScanResults()
 	
       }
     }
-    ring_dat <<param<<" "<<hst->GetMean()<<" "<<hst->GetRMS()<<" "<<fitP[1]<<" "<<fitP[3]<<" "<<100.*(hst->GetRMS())/(hst->GetMean())<<" "<<100.*fitP[3]/fitP[1]<<"\n";
+    ring_dat <<param_run<<" "<<hst->GetMean()<<" "<<hst->GetRMS()<<" "<<fitP[1]<<" "<<fitP[3]<<" "<<100.*(hst->GetRMS())/(hst->GetMean())<<" "<<100.*fitP[3]/fitP[1]<<"\n";
 
     file->Close("R");    
     counter = counter + 1.0;
@@ -126,8 +126,8 @@ Int_t FindGraph(Int_t fA, Int_t hR)
     gr2->SetName(Form("Exnse_fA%d_hR%d",fA,hR));
     gr->SetMarkerStyle(21);
     gr2->SetMarkerStyle(21);
-    gr->GetXaxis()->SetTitle("Segment position [cm]"); //Change based on what is being scanned
-    gr2->GetXaxis()->SetTitle("Segment position [cm]"); //
+    gr->GetXaxis()->SetTitle("Segment position [mm]"); //Change based on what is being scanned
+    gr2->GetXaxis()->SetTitle("Segment position [mm]"); //
     gr->GetYaxis()->SetTitle("Langau PEs");
     gr2->GetYaxis()->SetTitle("Resolution [GSigma/MP]");
     fA_PEmean.push_back(gr);
@@ -154,7 +154,7 @@ Int_t FindGraph(Int_t fA, Int_t hR)
     gr->SetName(Form("PEMean_fA%d_hR%d",fA,hR));
     gr->SetMarkerStyle(21);
     gr->SetTitle("Segment scan photoelectron yield");
-    gr->GetXaxis()->SetTitle("Segment position [cm]"); //Change based on what is being scanned
+    gr->GetXaxis()->SetTitle("Segment position [mm]"); //Change based on what is being scanned
     gr->GetYaxis()->SetTitle("Raw PE mean");
     fA_PEmean_hR2.push_back(gr);
     C_mp->cd(1);
@@ -175,7 +175,7 @@ Int_t FindGraph(Int_t fA, Int_t hR)
     TGraphErrors* gr = new TGraphErrors();
     gr->SetName(Form("PEMean_fA%d_hR%d",fA,hR));
     gr->SetMarkerStyle(21);
-    gr->GetXaxis()->SetTitle("Segment position [cm]"); //Change based on what is being scanned
+    gr->GetXaxis()->SetTitle("Segment position [mm]"); //Change based on what is being scanned
     fA_PEmean_hR3.push_back(gr);
     return fA_PEmean_hR3.size()-1;
 
