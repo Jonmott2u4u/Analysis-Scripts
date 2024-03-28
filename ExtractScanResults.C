@@ -19,14 +19,14 @@ void ExtractScanResults()
 {
   //gSystem->Load("libMOLLEROptDictionaries.so");
 
-  //std::ofstream ring_dat;       //Opens a txt file where info like mean PE's is stored. Was added to create data formatted for a specific script
-  //ring_dat.open ("sim_R3.txt"); //Change the name to match the ring being analyzed, otherwise files will be overwritten
+  std::ofstream ring_dat;       //Opens a txt file where info like mean PE's is stored. Was added to create data formatted for a specific script
+  ring_dat.open ("r1.txt"); //Change the name to match the ring being analyzed, otherwise files will be overwritten
 
-  std::ifstream rfiles("r6.dat");
+  std::ifstream rfiles("files.dat");
   std::string line;
   TFile *file;
 
-  Double_t param=1.0;     //Change based on what is being scanned
+  Double_t param=0.0;     //Change based on what is being scanned
   Double_t param_step=1.0; //Increment for the horizontal axis
   Double_t fa=89; //Value doesn't seem to matter
   Int_t hr;
@@ -60,7 +60,7 @@ void ExtractScanResults()
     
     param_run = param + counter*param_step;
 
-    tmp = (TH1D*)file->Get("R8_CathodeEventsDistrHist");  //Loads a histogram associated with a ring of the user's choice
+    tmp = (TH1D*)file->Get("R1_CathodeEventsDistrHist");  //Loads a histogram associated with a ring of the user's choice
     
     hst = (TH1D*)tmp->Clone(Form("CEH_%s",runID.Data()));
     hst->SetTitle("Photoelectron Distribution");
@@ -95,12 +95,13 @@ void ExtractScanResults()
 	
       }
     }
-    //ring_dat <<param_run<<" "<<fitP[1]<<" "<<fitE[1]<<" "<<fitP[3]<<" "<<fitE[3]<<" "<<hst->GetMean()<<" "<<hst->GetRMS()<<" "<<100.*fitP[3]/fitP[1]<<" "<<100.*(hst->GetRMS())/(hst->GetMean())<<"\n";
+    ring_dat <<param<<" "<<hst->GetMean()<<" "<<hst->GetRMS()<<" "<<fitP[1]<<" "<<fitP[3]<<" "<<100.*(hst->GetRMS())/(hst->GetMean())<<" "<<100.*fitP[3]/fitP[1]<<"\n";
+
     file->Close("R");    
     counter = counter + 1.0;
     counter_vec++;
   }
-  //ring_dat.close();
+  ring_dat.close();
   rfiles.close();
 }
 
