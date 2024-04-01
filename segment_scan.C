@@ -13,7 +13,7 @@ float v_pos_r2[550],mean_r2[550],rms_r2[550],mp_langau_r2[550],gsigma_langau_r2[
 float v_pos_r1[550],mean_r1[550],rms_r1[550],mp_langau_r1[550],gsigma_langau_r1[550],rms_mean_r1[550],res_langau_r1[550];
 
 
-ifstream infile_r6, infile_r5bf, infile_r4, infile_r3, infile_r2, infile_r1;
+ifstream infile_r6, infile_r5ff, infile_r4, infile_r3, infile_r2, infile_r1;
 infile_r6.open("r6.txt");
 infile_r5ff.open("r5.txt");
 infile_r4.open("r4.txt");
@@ -156,32 +156,32 @@ c2->SetGridy();
 TCanvas *c3 = new TCanvas();
 TMultiGraph *RMS_mean = new TMultiGraph();
 
-TGraph *RMS_mean_r6 = new TGraph (550,v_pos_r6,mean_r6);
+TGraph *RMS_mean_r6 = new TGraph (550,v_pos_r6,rms_mean_r6);
 RMS_mean_r6->SetMarkerStyle(8);
 RMS_mean_r6->SetMarkerColor(kBlue);
 RMS_mean_r6->SetMarkerSize(1.5);
 
-TGraph *RMS_mean_r5ff = new TGraph (550,v_pos_r5ff,mean_r5ff);
-RMS_mean_r5bf->SetMarkerStyle(8);
-RMS_mean_r5bf->SetMarkerColor(kRed);
-RMS_mean_r5bf->SetMarkerSize(1.5);
+TGraph *RMS_mean_r5ff = new TGraph (550,v_pos_r5ff,rms_mean_r5ff);
+RMS_mean_r5ff->SetMarkerStyle(8);
+RMS_mean_r5ff->SetMarkerColor(kRed);
+RMS_mean_r5ff->SetMarkerSize(1.5);
 
-TGraph *RMS_mean_r4 = new TGraph (550,v_pos_r4,mean_r4);
+TGraph *RMS_mean_r4 = new TGraph (550,v_pos_r4,rms_mean_r4);
 RMS_mean_r4->SetMarkerStyle(8);
 RMS_mean_r4->SetMarkerColor(kGreen+3);
 RMS_mean_r4->SetMarkerSize(1.5);
 
-TGraph *RMS_mean_r3 = new TGraph (550,v_pos_r3,mean_r3);
+TGraph *RMS_mean_r3 = new TGraph (550,v_pos_r3,rms_mean_r3);
 RMS_mean_r3->SetMarkerStyle(8);
 RMS_mean_r3->SetMarkerColor(kOrange);
 RMS_mean_r3->SetMarkerSize(1.5);
 
-TGraph *RMS_mean_r2 = new TGraph (550,v_pos_r2,mean_r2);
+TGraph *RMS_mean_r2 = new TGraph (550,v_pos_r2,rms_mean_r2);
 RMS_mean_r2->SetMarkerStyle(8);
 RMS_mean_r2->SetMarkerColor(kMagenta);
 RMS_mean_r2->SetMarkerSize(1.5);
 
-TGraph *RMS_mean_r1 = new TGraph (550,v_pos_r1,mean_r1);
+TGraph *RMS_mean_r1 = new TGraph (550,v_pos_r1,rms_mean_r1);
 RMS_mean_r1->SetMarkerStyle(8);
 RMS_mean_r1->SetMarkerColor(kYellow);
 RMS_mean_r1->SetMarkerSize(1.5);
@@ -211,9 +211,9 @@ RES_langau_r6->SetMarkerColor(kBlue);
 RES_langau_r6->SetMarkerSize(1.5);
 
 TGraph *RES_langau_r5ff = new TGraph (550,v_pos_r5ff,res_langau_r5ff);
-RES_langau_r5bf->SetMarkerStyle(8);
-RES_langau_r5bf->SetMarkerColor(kRed);
-RES_langau_r5bf->SetMarkerSize(1.5);
+RES_langau_r5ff->SetMarkerStyle(8);
+RES_langau_r5ff->SetMarkerColor(kRed);
+RES_langau_r5ff->SetMarkerSize(1.5);
 
 TGraph *RES_langau_r4 = new TGraph (550,v_pos_r4,res_langau_r4);
 RES_langau_r4->SetMarkerStyle(8);
@@ -258,19 +258,24 @@ c2->Print("plots/langau_PE_yield.png");
 c3->Print("plots/rms_mean.png");
 c4->Print("plots/langau_res.png");
 
+c1->Print("plots/mean_PE_yield.root");
+c2->Print("plots/langau_PE_yield.root");
+c3->Print("plots/rms_mean.root");
+c4->Print("plots/langau_res.root");
+
 
 /*
-c1->Print("PE_yield_langau_vertical_54_r6_r5bf_r4.pdf");
-c2->Print("PE_yield_gaus_vertical_54_r6_r5bf_r4.pdf");
-c3->Print("reso_langau_vertical_54_r6_r5bf_r4.pdf");
-c4->Print("reso_gaus_vertical_54_r6_r5bf_r4.pdf");
-c5->Print("rms_mean_vertical_54_r6_r5bf_r4.pdf");
+c1->Print("PE_yield_langau_vertical_54_r6_r5ff_r4.pdf");
+c2->Print("PE_yield_gaus_vertical_54_r6_r5ff_r4.pdf");
+c3->Print("reso_langau_vertical_54_r6_r5ff_r4.pdf");
+c4->Print("reso_gaus_vertical_54_r6_r5ff_r4.pdf");
+c5->Print("rms_mean_vertical_54_r6_r5ff_r4.pdf");
 
 
-c1->Print("PE_yield_langau_vertical_54_r6_r5bf_r4.eps");
-c2->Print("PE_yield_gaus_vertical_54_r6_r5bf_r4.eps");
-c3->Print("reso_langau_vertical_54_r6_r5bf_r4.eps");
-c4->Print("reso_gaus_vertical_54_r6_r5bf_r4.eps");
-c5->Print("rms_mean_vertical_54_r6_r5bf_r4.eps");
+c1->Print("PE_yield_langau_vertical_54_r6_r5ff_r4.eps");
+c2->Print("PE_yield_gaus_vertical_54_r6_r5ff_r4.eps");
+c3->Print("reso_langau_vertical_54_r6_r5ff_r4.eps");
+c4->Print("reso_gaus_vertical_54_r6_r5ff_r4.eps");
+c5->Print("rms_mean_vertical_54_r6_r5ff_r4.eps");
 */
 }
