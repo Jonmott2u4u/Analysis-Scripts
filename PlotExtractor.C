@@ -170,21 +170,28 @@ void quartz_pos(){
     while(std::getline(rfiles, line)){
         file = TFile::Open(line.data());
         file_open++;
-        for(int det=4; det<5; det++){
-            pos = -11;
+        int det_focus = 8;
+        for(int det=1; det<9; det++){
+            /*pos = -11;
             while(pos <= 1){
                 pos++;
 		        pos++;
                 TTree *tree = (TTree*)file->Get("MOLLEROptTree");
                 TCanvas *canvas_pes = new TCanvas("canvas_pes","canvas_pes");
-                tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iSoloPEs",det),Form("(MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY <= %i) && (MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY > %i-2)",det,pos,det,pos));
+                tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iPEs",det),Form("(MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY <= %i) && (MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY > %i-2)",det,pos,det,pos));
                 canvas_pes->SaveAs(Form("plots/r%i/file%i_pes_pos_%i.root",det,file_open,pos));
 
-                /*TCanvas *canvas_pos = new TCanvas("canvas_pos","canvas_pos");
+                TCanvas *canvas_pos = new TCanvas("canvas_pos","canvas_pos");
                 tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY:MOLLEROptData.MOLLERDetectorEvent.R%iTileHitX",det,det),Form("(MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY <= %i) && (MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY > %i-2)",det,pos,det,pos),"colz");
-                canvas_pos->SaveAs(Form("plots/r%i/file%i_quartz_pos_%i.root",det,file_open,pos));*/
+                canvas_pos->SaveAs(Form("plots/r%i/file%i_quartz_pos_%i.root",det,file_open,pos));
 
-            }
+            }*/
+
+            TTree *tree = (TTree*)file->Get("MOLLEROptTree");
+            TCanvas *canvas_pos = new TCanvas("canvas_pos","canvas_pos");
+            tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY:MOLLEROptData.MOLLERDetectorEvent.R%iTileHitX",det,det),Form("(MOLLEROptData.MOLLERDetectorEvent.R%iQuartzTrackHit == 1",det_focus),"colz");
+            canvas_pos->SaveAs(Form("plots/hit-R%i/r%i-quartz-hit-pos.root",det_focus,det));
+
         }
         file->Close("R");
     }
