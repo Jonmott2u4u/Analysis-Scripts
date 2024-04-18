@@ -175,11 +175,11 @@ void quartz_pos(){
  
             TTree *tree = (TTree*)file->Get("MOLLEROptTree");
             TCanvas *canvas_scintcut_pos = new TCanvas("canvas_scintcut_pos","canvas_scintcut_pos");
-            tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY:MOLLEROptData.MOLLERDetectorEvent.R%iTileHitX",det,det),Form("(MOLLEROptData.MOLLERDetectorEvent.R%iQuartzTrackHit == 1",det_focus),"colz");
+            tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY:MOLLEROptData.MOLLERDetectorEvent.R%iTileHitX",det,det),Form("MOLLEROptData.MOLLERDetectorEvent.R%iQuartzTrackHit == 1",det_focus),"colz");
             canvas_scintcut_pos->SaveAs(Form("plots/hit-R%i-scintcut/r%i-quartz-hit-pos.root",det_focus,det));
 
             TCanvas *canvas_adjacentcut_pos = new TCanvas("canvas_adjacentcut_pos","canvas_adjacentcut_pos");
-            tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY:MOLLEROptData.MOLLERDetectorEvent.R%iTileHitX",det,det),Form("((MOLLEROptData.MOLLERDetectorEvent.R%iQuartzTrackHit == 1) && (MOLLEROptData.MOLLERDetectorEvent.R2QuartzTrackHit == 0)",det_focus),"colz");
+            tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY:MOLLEROptData.MOLLERDetectorEvent.R%iTileHitX",det,det),Form("(MOLLEROptData.MOLLERDetectorEvent.R%iQuartzTrackHit == 1) && (MOLLEROptData.MOLLERDetectorEvent.R2QuartzTrackHit == 0)",det_focus),"colz");
             canvas_adjacentcut_pos->SaveAs(Form("plots/hit-R%i-adjacentcut/r%i-quartz-hit-pos.root",det_focus,det));
 
         }
