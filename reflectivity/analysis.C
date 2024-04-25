@@ -1009,6 +1009,92 @@ int analysis(int angle)
   float ref[files][points];
   float refError[files][points];
 
+  char OUTPUT_FILENAME[files][256];
+  for(int inc=0;inc<files;inc++) {
+	  sprintf(OUTPUT_FILENAME[inc],"%s%s","analyzed_",INPUT_FILENAME[inc]);
+    ofstream Form("myOutFile%i(OUTPUT_FILENAME[%i])",inc,inc);
+  }
+
+  /*ofstream myOutFile0(OUTPUT_FILENAME[0]);
+  ofstream myOutFile1(OUTPUT_FILENAME[1]);
+  ofstream myOutFile2(OUTPUT_FILENAME[2]);
+  ofstream myOutFile3(OUTPUT_FILENAME[3]);
+  ofstream myOutFile4(OUTPUT_FILENAME[4]);
+  ofstream myOutFile5(OUTPUT_FILENAME[5]);
+  ofstream myOutFile6(OUTPUT_FILENAME[6]);
+  ofstream myOutFile7(OUTPUT_FILENAME[7]);
+  ofstream myOutFile8(OUTPUT_FILENAME[8]);
+  ofstream myOutFile9(OUTPUT_FILENAME[9]);
+  ofstream myOutFile10(OUTPUT_FILENAME[10]);
+  ofstream myOutFile11(OUTPUT_FILENAME[11]);
+  ofstream myOutFile12(OUTPUT_FILENAME[12]);
+  ofstream myOutFile13(OUTPUT_FILENAME[13]);
+  ofstream myOutFile14(OUTPUT_FILENAME[14]);
+  ofstream myOutFile15(OUTPUT_FILENAME[15]);
+  ofstream myOutFile16(OUTPUT_FILENAME[16]);
+  ofstream myOutFile17(OUTPUT_FILENAME[17]);
+  ofstream myOutFile18(OUTPUT_FILENAME[18]);
+  ofstream myOutFile19(OUTPUT_FILENAME[19]);
+  ofstream myOutFile20(OUTPUT_FILENAME[20]);
+  ofstream myOutFile21(OUTPUT_FILENAME[21]);
+  ofstream myOutFile22(OUTPUT_FILENAME[22]);
+  ofstream myOutFile23(OUTPUT_FILENAME[23]);
+  ofstream myOutFile24(OUTPUT_FILENAME[24]);
+  ofstream myOutFile25(OUTPUT_FILENAME[25]);
+  ofstream myOutFile26(OUTPUT_FILENAME[26]);
+  ofstream myOutFile27(OUTPUT_FILENAME[27]);
+  ofstream myOutFile28(OUTPUT_FILENAME[28]);
+  ofstream myOutFile29(OUTPUT_FILENAME[29]);
+  ofstream myOutFile30(OUTPUT_FILENAME[30]);
+  ofstream myOutFile31(OUTPUT_FILENAME[31]);
+  ofstream myOutFile32(OUTPUT_FILENAME[32]);
+  ofstream myOutFile33(OUTPUT_FILENAME[33]);
+  ofstream myOutFile34(OUTPUT_FILENAME[34]);
+  ofstream myOutFile35(OUTPUT_FILENAME[35]);
+  ofstream myOutFile36(OUTPUT_FILENAME[36]);
+  ofstream myOutFile37(OUTPUT_FILENAME[37]);
+  ofstream myOutFile38(OUTPUT_FILENAME[38]);
+  ofstream myOutFile39(OUTPUT_FILENAME[39]);
+  ofstream myOutFile40(OUTPUT_FILENAME[40]);
+  ofstream myOutFile41(OUTPUT_FILENAME[41]);
+  ofstream myOutFile42(OUTPUT_FILENAME[42]);
+  ofstream myOutFile44(OUTPUT_FILENAME[43]);
+  ofstream myOutFile44(OUTPUT_FILENAME[44]);
+  ofstream myOutFile45(OUTPUT_FILENAME[45]);
+  ofstream myOutFile46(OUTPUT_FILENAME[46]);
+  ofstream myOutFile47(OUTPUT_FILENAME[47]);
+  ofstream myOutFile48(OUTPUT_FILENAME[48]);
+  ofstream myOutFile49(OUTPUT_FILENAME[49]);
+  ofstream myOutFile50(OUTPUT_FILENAME[50]);
+  ofstream myOutFile51(OUTPUT_FILENAME[51]);
+  ofstream myOutFile52(OUTPUT_FILENAME[52]);
+  ofstream myOutFile53(OUTPUT_FILENAME[53]);
+  ofstream myOutFile54(OUTPUT_FILENAME[54]);
+  ofstream myOutFile55(OUTPUT_FILENAME[55]);
+  ofstream myOutFile56(OUTPUT_FILENAME[56]);
+  ofstream myOutFile57(OUTPUT_FILENAME[57]);
+  ofstream myOutFile58(OUTPUT_FILENAME[58]);
+  ofstream myOutFile59(OUTPUT_FILENAME[59]);
+  ofstream myOutFile60(OUTPUT_FILENAME[60]);
+  ofstream myOutFile61(OUTPUT_FILENAME[61]);
+  ofstream myOutFile62(OUTPUT_FILENAME[62]);
+  ofstream myOutFile63(OUTPUT_FILENAME[63]);
+  ofstream myOutFile64(OUTPUT_FILENAME[64]);
+  ofstream myOutFile65(OUTPUT_FILENAME[65]);
+  ofstream myOutFile66(OUTPUT_FILENAME[66]);
+  ofstream myOutFile67(OUTPUT_FILENAME[67]);
+  ofstream myOutFile68(OUTPUT_FILENAME[68]);
+  ofstream myOutFile69(OUTPUT_FILENAME[69]);
+  ofstream myOutFile70(OUTPUT_FILENAME[70]);
+  ofstream myOutFile71(OUTPUT_FILENAME[71]);
+  ofstream myOutFile72(OUTPUT_FILENAME[72]);
+  ofstream myOutFile73(OUTPUT_FILENAME[73]);
+  ofstream myOutFile74(OUTPUT_FILENAME[74]);
+  ofstream myOutFile75(OUTPUT_FILENAME[75]);
+  ofstream myOutFile76(OUTPUT_FILENAME[76]);
+  ofstream myOutFile77(OUTPUT_FILENAME[77]);
+  ofstream myOutFile78(OUTPUT_FILENAME[78]);*/
+
   for(int i=0;i<points;i++) {
 
     ref[0][i] = counts[0][i]/counts[std][i]*s_my->Eval(lambda[0][i]);    
@@ -1253,6 +1339,90 @@ int analysis(int angle)
     if(counts[78][i] > 0) {refError[78][i] = ref[78][i]/sqrt(counts[78][i]);}
     else {refError[78][i] = ref[78][i];}
 
+    myOutFile0 << lambda[0][i] << ' ' << ref[0][i] << ' ' << refError[0][i] << '\n';
+    myOutFile1 << lambda[1][i] << ' ' << ref[1][i] << ' ' << refError[1][i] << '\n';
+    myOutFile2 << lambda[2][i] << ' ' << ref[2][i] << ' ' << refError[2][i] << '\n';
+    myOutFile3 << lambda[3][i] << ' ' << ref[3][i] << ' ' << refError[3][i] << '\n';
+    myOutFile4 << lambda[4][i] << ' ' << ref[4][i] << ' ' << refError[4][i] << '\n';
+    myOutFile5 << lambda[5][i] << ' ' << ref[5][i] << ' ' << refError[5][i] << '\n';
+    myOutFile6 << lambda[6][i] << ' ' << ref[6][i] << ' ' << refError[6][i] << '\n';
+    myOutFile7 << lambda[7][i] << ' ' << ref[7][i] << ' ' << refError[7][i] << '\n';
+    myOutFile8 << lambda[8][i] << ' ' << ref[8][i] << ' ' << refError[8][i] << '\n';
+    myOutFile9 << lambda[9][i] << ' ' << ref[9][i] << ' ' << refError[9][i] << '\n';
+    myOutFile10 << lambda[10][i] << ' ' << ref[10][i] << ' ' << refError[10][i] << '\n';
+    myOutFile11 << lambda[11][i] << ' ' << ref[11][i] << ' ' << refError[11][i] << '\n';
+    myOutFile12 << lambda[12][i] << ' ' << ref[12][i] << ' ' << refError[12][i] << '\n';
+    myOutFile13 << lambda[13][i] << ' ' << ref[13][i] << ' ' << refError[13][i] << '\n';
+    myOutFile14 << lambda[14][i] << ' ' << ref[14][i] << ' ' << refError[14][i] << '\n';
+    myOutFile15 << lambda[15][i] << ' ' << ref[15][i] << ' ' << refError[15][i] << '\n';
+    myOutFile16 << lambda[16][i] << ' ' << ref[16][i] << ' ' << refError[16][i] << '\n';
+    myOutFile17 << lambda[17][i] << ' ' << ref[17][i] << ' ' << refError[17][i] << '\n';
+    myOutFile18 << lambda[18][i] << ' ' << ref[18][i] << ' ' << refError[18][i] << '\n';
+    myOutFile19 << lambda[19][i] << ' ' << ref[19][i] << ' ' << refError[19][i] << '\n';
+    myOutFile20 << lambda[20][i] << ' ' << ref[20][i] << ' ' << refError[20][i] << '\n';
+    myOutFile21 << lambda[21][i] << ' ' << ref[21][i] << ' ' << refError[21][i] << '\n';
+    myOutFile22 << lambda[22][i] << ' ' << ref[22][i] << ' ' << refError[22][i] << '\n';
+    myOutFile23 << lambda[23][i] << ' ' << ref[23][i] << ' ' << refError[23][i] << '\n';
+    myOutFile24 << lambda[24][i] << ' ' << ref[24][i] << ' ' << refError[24][i] << '\n';
+    myOutFile25 << lambda[25][i] << ' ' << ref[25][i] << ' ' << refError[25][i] << '\n';
+    myOutFile26 << lambda[26][i] << ' ' << ref[26][i] << ' ' << refError[26][i] << '\n';
+    myOutFile27 << lambda[27][i] << ' ' << ref[27][i] << ' ' << refError[27][i] << '\n';
+    myOutFile28 << lambda[28][i] << ' ' << ref[28][i] << ' ' << refError[28][i] << '\n';
+    myOutFile29 << lambda[29][i] << ' ' << ref[29][i] << ' ' << refError[29][i] << '\n';
+    myOutFile30 << lambda[30][i] << ' ' << ref[30][i] << ' ' << refError[30][i] << '\n';
+    myOutFile31 << lambda[31][i] << ' ' << ref[31][i] << ' ' << refError[31][i] << '\n';
+    myOutFile32 << lambda[32][i] << ' ' << ref[32][i] << ' ' << refError[32][i] << '\n';
+    myOutFile33 << lambda[33][i] << ' ' << ref[33][i] << ' ' << refError[33][i] << '\n';
+    myOutFile34 << lambda[34][i] << ' ' << ref[34][i] << ' ' << refError[34][i] << '\n';
+    myOutFile35 << lambda[35][i] << ' ' << ref[35][i] << ' ' << refError[35][i] << '\n';
+    myOutFile36 << lambda[36][i] << ' ' << ref[36][i] << ' ' << refError[36][i] << '\n';
+    myOutFile37 << lambda[37][i] << ' ' << ref[37][i] << ' ' << refError[37][i] << '\n';
+    myOutFile38 << lambda[38][i] << ' ' << ref[38][i] << ' ' << refError[38][i] << '\n';
+    myOutFile39 << lambda[39][i] << ' ' << ref[39][i] << ' ' << refError[39][i] << '\n';
+    myOutFile40 << lambda[40][i] << ' ' << ref[40][i] << ' ' << refError[40][i] << '\n';
+    myOutFile41 << lambda[41][i] << ' ' << ref[41][i] << ' ' << refError[41][i] << '\n';
+    myOutFile42 << lambda[42][i] << ' ' << ref[42][i] << ' ' << refError[42][i] << '\n';
+    myOutFile43 << lambda[43][i] << ' ' << ref[43][i] << ' ' << refError[43][i] << '\n';
+    myOutFile44 << lambda[44][i] << ' ' << ref[44][i] << ' ' << refError[44][i] << '\n';
+    myOutFile45 << lambda[45][i] << ' ' << ref[45][i] << ' ' << refError[45][i] << '\n';
+    myOutFile46 << lambda[46][i] << ' ' << ref[46][i] << ' ' << refError[46][i] << '\n';
+    myOutFile47 << lambda[47][i] << ' ' << ref[47][i] << ' ' << refError[47][i] << '\n';
+    myOutFile48 << lambda[48][i] << ' ' << ref[48][i] << ' ' << refError[48][i] << '\n';
+    myOutFile49 << lambda[49][i] << ' ' << ref[49][i] << ' ' << refError[49][i] << '\n';
+    myOutFile50 << lambda[50][i] << ' ' << ref[50][i] << ' ' << refError[50][i] << '\n';
+    myOutFile51 << lambda[51][i] << ' ' << ref[51][i] << ' ' << refError[51][i] << '\n';
+    myOutFile52 << lambda[52][i] << ' ' << ref[52][i] << ' ' << refError[52][i] << '\n';
+    myOutFile53 << lambda[53][i] << ' ' << ref[53][i] << ' ' << refError[53][i] << '\n';
+    myOutFile54 << lambda[54][i] << ' ' << ref[54][i] << ' ' << refError[54][i] << '\n';
+    myOutFile55 << lambda[55][i] << ' ' << ref[55][i] << ' ' << refError[55][i] << '\n';
+    myOutFile56 << lambda[56][i] << ' ' << ref[56][i] << ' ' << refError[56][i] << '\n';
+    myOutFile57 << lambda[57][i] << ' ' << ref[57][i] << ' ' << refError[57][i] << '\n';
+    myOutFile58 << lambda[58][i] << ' ' << ref[58][i] << ' ' << refError[58][i] << '\n';
+    myOutFile59 << lambda[59][i] << ' ' << ref[59][i] << ' ' << refError[59][i] << '\n';
+    myOutFile60 << lambda[60][i] << ' ' << ref[60][i] << ' ' << refError[60][i] << '\n';
+    myOutFile61 << lambda[61][i] << ' ' << ref[61][i] << ' ' << refError[61][i] << '\n';
+    myOutFile62 << lambda[62][i] << ' ' << ref[62][i] << ' ' << refError[62][i] << '\n';
+    myOutFile63 << lambda[63][i] << ' ' << ref[63][i] << ' ' << refError[63][i] << '\n';
+    myOutFile64 << lambda[64][i] << ' ' << ref[64][i] << ' ' << refError[64][i] << '\n';
+    myOutFile65 << lambda[65][i] << ' ' << ref[65][i] << ' ' << refError[65][i] << '\n';
+    myOutFile66 << lambda[66][i] << ' ' << ref[66][i] << ' ' << refError[66][i] << '\n';
+    myOutFile67 << lambda[67][i] << ' ' << ref[67][i] << ' ' << refError[67][i] << '\n';
+    myOutFile68 << lambda[68][i] << ' ' << ref[68][i] << ' ' << refError[68][i] << '\n';
+    myOutFile69 << lambda[69][i] << ' ' << ref[69][i] << ' ' << refError[69][i] << '\n';
+    myOutFile70 << lambda[70][i] << ' ' << ref[70][i] << ' ' << refError[70][i] << '\n';
+    myOutFile71 << lambda[71][i] << ' ' << ref[71][i] << ' ' << refError[71][i] << '\n';
+    myOutFile72 << lambda[72][i] << ' ' << ref[72][i] << ' ' << refError[72][i] << '\n';
+    myOutFile73 << lambda[73][i] << ' ' << ref[73][i] << ' ' << refError[73][i] << '\n';
+    myOutFile74 << lambda[74][i] << ' ' << ref[74][i] << ' ' << refError[74][i] << '\n';
+    myOutFile75 << lambda[75][i] << ' ' << ref[75][i] << ' ' << refError[75][i] << '\n';
+    myOutFile76 << lambda[76][i] << ' ' << ref[76][i] << ' ' << refError[76][i] << '\n';
+    myOutFile77 << lambda[77][i] << ' ' << ref[77][i] << ' ' << refError[77][i] << '\n';
+    myOutFile78 << lambda[78][i] << ' ' << ref[78][i] << ' ' << refError[78][i] << '\n';
+
+  }
+
+  for(int inc=0;inc<files;inc++) {
+    Form("myOutFile%i.close()",inc);
   }
 
   //Now produce reflectivity graph for 90 degrees
