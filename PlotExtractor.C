@@ -1,5 +1,6 @@
 #include <iostream>
 #include <TString.h>
+#include <math.h>
 
 void scint_pes()
 {
@@ -170,19 +171,155 @@ void quartz_pos(){
     while(std::getline(rfiles, line)){
         file = TFile::Open(line.data());
         file_open++;
-        int det_focus = 1;
-        for(int det=1; det<9; det++){
- 
-            TTree *tree = (TTree*)file->Get("MOLLEROptTree");
-            TCanvas *canvas_scintcut_pos = new TCanvas("canvas_scintcut_pos","canvas_scintcut_pos");
-            tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY:MOLLEROptData.MOLLERDetectorEvent.R%iTileHitX",det,det),Form("MOLLEROptData.MOLLERDetectorEvent.R%iQuartzTrackHit == 1",det_focus),"colz");
-            canvas_scintcut_pos->SaveAs(Form("plots/hit-R%i-scintcut/r%i-quartz-hit-pos.root",det_focus,det));
+        for(int det=4; det<5; det++){
+            pos = -11;
+            while(pos <= 1){
+                pos++;
+		        pos++;
+                TTree *tree = (TTree*)file->Get("MOLLEROptTree");
+                TCanvas *canvas_pes = new TCanvas("canvas_pes","canvas_pes");
+                tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iSoloPEs",det),Form("(MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY <= %i) && (MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY > %i-2)",det,pos,det,pos));
+                canvas_pes->SaveAs(Form("plots/r%i/file%i_pes_pos_%i.root",det,file_open,pos));
 
-            TCanvas *canvas_adjacentcut_pos = new TCanvas("canvas_adjacentcut_pos","canvas_adjacentcut_pos");
-            tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY:MOLLEROptData.MOLLERDetectorEvent.R%iTileHitX",det,det),Form("(MOLLEROptData.MOLLERDetectorEvent.R%iQuartzTrackHit == 1) && (MOLLEROptData.MOLLERDetectorEvent.R2QuartzTrackHit == 0)",det_focus),"colz");
-            canvas_adjacentcut_pos->SaveAs(Form("plots/hit-R%i-adjacentcut/r%i-quartz-hit-pos.root",det_focus,det));
+                /*TCanvas *canvas_pos = new TCanvas("canvas_pos","canvas_pos");
+                tree->Draw(Form("MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY:MOLLEROptData.MOLLERDetectorEvent.R%iTileHitX",det,det),Form("(MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY <= %i) && (MOLLEROptData.MOLLERDetectorEvent.R%iTileHitY > %i-2)",det,pos,det,pos),"colz");
+                canvas_pos->SaveAs(Form("plots/r%i/file%i_quartz_pos_%i.root",det,file_open,pos));*/
 
+            }
         }
+        file->Close("R");
+    }
+}
+
+void scint_hit_tracker(){
+
+    std::ifstream rfiles("files.dat");
+    std::string line;
+    TFile *file;
+    TH1D *hst, *tmp;
+    int pos, file_open = 0;
+    char ext[] = "MOLLEROptData.MOLLERDetectorEvent.";
+
+    while(std::getline(rfiles, line)){
+        file = TFile::Open(line.data());
+        file_open++;
+        TTree *tree = (TTree*)file->Get("MOLLEROptTree");
+
+        TCanvas *canvas_scint12 = new TCanvas("canvas_scint12","canvas_scint12");
+        tree->Draw(Form("%sScint1TrackHit",ext),Form("%sScint2TrackHit == 1",ext));
+        canvas_scint12->SaveAs("plots/scint12_gems.root");
+
+        TCanvas *canvas_scint123 = new TCanvas("canvas_scint123","canvas_scint123");
+        tree->Draw(Form("%sScint1TrackHit",ext),Form("(%sScint2TrackHit == 1) && (%sScint3TrackHit == 1)",ext,ext));
+        canvas_scint123->SaveAs("plots/scint123_gems.root");
+
+        TCanvas *canvas_scint124 = new TCanvas("canvas_scint124","canvas_scint124");
+        tree->Draw(Form("%sScint1TrackHit",ext),Form("(%sScint2TrackHit == 1) && (%sScint4TrackHit == 1)",ext,ext));
+        canvas_scint124->SaveAs("plots/scint124_gems.root");
+
+        TCanvas *canvas_scint1234 = new TCanvas("canvas_scint1234","canvas_scint1234");
+        tree->Draw(Form("%sScint1TrackHit",ext),Form("(%sScint2TrackHit == 1) && (%sScint3TrackHit == 1) && (%sScint4TrackHit == 1)",ext,ext,ext));
+        canvas_scint1234->SaveAs("plots/scint1234_gems.root");
+
+        file->Close("R");
+    }
+}
+
+void scint_angle_tracker(){
+
+    std::ifstream rfiles("files.dat");
+    std::string line;
+    TFile *file;
+    TH1D *hst, *tmp;
+    int pos, file_open = 0;
+    char ext[] = "MOLLEROptData.MOLLERDetectorEvent.";
+
+    while(std::getline(rfiles, line)){
+        file = TFile::Open(line.data());
+        file_open++;
+        TTree *tree = (TTree*)file->Get("MOLLEROptTree");
+
+        TCanvas *canvas_scint12_angles = new TCanvas("canvas_scint12_angles","canvas_scint12_angles");
+        tree->Draw(Form("%sInitialBeamAngle",ext),Form("(%sScint1TrackHit == 1) & (%sScint2TrackHit == 1)",ext,ext));
+        canvas_scint12_angles->SaveAs("plots/scint12_angles.root");
+
+        TCanvas *canvas_scint123_angles = new TCanvas("canvas_scint123_angles","canvas_scint123_angles");
+        tree->Draw(Form("%sInitialBeamAngle",ext),Form("(%sScint1TrackHit == 1) & (%sScint2TrackHit == 1) & (%sScint3TrackHit == 1)",ext,ext,ext));
+        canvas_scint123_angles->SaveAs("plots/scint123_angles.root");
+
+        TCanvas *canvas_scint124_angles = new TCanvas("canvas_scint124_angles","canvas_scint124_angles");
+        tree->Draw(Form("%sInitialBeamAngle",ext),Form("(%sScint1TrackHit == 1) & (%sScint2TrackHit == 1) & (%sScint4TrackHit == 1)",ext,ext,ext));
+        canvas_scint124_angles->SaveAs("plots/scint124_angles.root");
+
+        TCanvas *canvas_scint1234_angles = new TCanvas("canvas_scint1234_angles","canvas_scint1234_angles");
+        tree->Draw(Form("%sInitialBeamAngle",ext),Form("(%sScint1TrackHit == 1) & (%sScint2TrackHit == 1) & (%sScint3TrackHit == 1) & (%sScint4TrackHit == 1) ",ext,ext,ext,ext));
+        canvas_scint1234_angles->SaveAs("plots/scint1234_angles.root");
+
+        file->Close("R");
+    }
+}
+
+void scint_hitpos_tracker(){
+
+    std::ifstream rfiles("files.dat");
+    std::string line;
+    TFile *file;
+    TH1D *hst, *tmp;
+    int pos, file_open = 0;
+    char ext[] = "MOLLEROptData.MOLLERDetectorEvent.";
+
+    while(std::getline(rfiles, line)){
+        file = TFile::Open(line.data());
+        file_open++;
+        TTree *tree = (TTree*)file->Get("MOLLEROptTree");
+
+        TCanvas *canvas_scint123 = new TCanvas("canvas_scint123","canvas_scint123");
+        tree->Draw(Form("%sScint3HitY:%sScint3HitX",ext,ext),Form("(%sScint1TrackHit == 1) & (%sScint2TrackHit == 1)",ext,ext),"colz");
+        canvas_scint123->SaveAs("plots/scint12_gem1_hitpos.root");
+
+        TCanvas *canvas_scint124 = new TCanvas("canvas_scint124","canvas_scint124");
+        tree->Draw(Form("%sScint4HitY:%sScint4HitX",ext,ext),Form("(%sScint1TrackHit == 1) & (%sScint2TrackHit == 1)",ext,ext),"colz");
+        canvas_scint124->SaveAs("plots/scint12_gem2_hitpos.root");
+
+        TCanvas *canvas_scint1234_gem1 = new TCanvas("canvas_scint1234_gem1","canvas_scint1234_gem1");
+        tree->Draw(Form("%sScint3HitY:%sScint3HitX",ext,ext),Form("(%sScint1TrackHit == 1) & (%sScint2TrackHit == 1) & (%sScint4TrackHit == 1)",ext,ext,ext),"colz");
+        canvas_scint1234_gem1->SaveAs("plots/scint1234_gem1_hitpos.root");
+
+        TCanvas *canvas_scint1234_gem2 = new TCanvas("canvas_scint1234_gem2","canvas_scint1234_gem2");
+        tree->Draw(Form("%sScint4HitY:%sScint4HitX",ext,ext),Form("(%sScint1TrackHit == 1) & (%sScint2TrackHit == 1) & (%sScint3TrackHit == 1)",ext,ext,ext),"colz");
+        canvas_scint1234_gem2->SaveAs("plots/scint1234_gem2_hitpos.root");
+
+        file->Close("R");
+    }
+}
+
+void scint_slope_calc(){
+
+    std::ifstream rfiles("files.dat");
+    std::string line;
+    TFile *file;
+    TH1D *hst, *tmp;
+    int pos, file_open = 0;
+    float pi = TMath::Pi();
+    char ext[] = "MOLLEROptData.MOLLERDetectorEvent.";
+
+    while(std::getline(rfiles, line)){
+        file = TFile::Open(line.data());
+        file_open++;
+        TTree *tree = (TTree*)file->Get("MOLLEROptTree");
+        // No conditions are used since slopex/y require hits on all scints+gems to store data
+        TCanvas *canvas_scint1234_slope = new TCanvas("canvas_scint1234_slope","canvas_scint1234_slope");
+        tree->Draw(Form("%sslopey:%sslopex",ext,ext),"","colz");
+        canvas_scint1234_slope->SaveAs("plots/scint1234_slope_hitpos.root");
+
+        TCanvas *canvas_scint1234_slopex = new TCanvas("canvas_scint1234_slopex","canvas_scint1234_slopex");
+        tree->Draw(Form("%sslopex",ext),"");
+        canvas_scint1234_slopex->SaveAs("plots/scint1234_slopex.root");
+
+        TCanvas *canvas_scint1234_slopey = new TCanvas("canvas_scint1234_slopey","canvas_scint1234_slopey");
+        tree->Draw(Form("%sslopey",ext),"");
+        canvas_scint1234_slopey->SaveAs("plots/scint1234_slopey.root");
+
         file->Close("R");
     }
 }
