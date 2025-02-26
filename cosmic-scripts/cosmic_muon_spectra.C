@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <TString.h>
 
 void cosmic_muon_spectra()
 {
@@ -7,9 +8,6 @@ void cosmic_muon_spectra()
 int k=0, entries=1e3;
 float i_not, n1, e_not, x, n2, e_c, epsilon;
 float i[1000], energy[1000];
-
-ofstream data;
-data.open ("cosmics.dat"); //.dat file containing energy values according to weight (more appearances = higher flux)
 
 x = 0.10;
 i_not=70.7;//m^-2s^-1sr^-1
@@ -31,28 +29,16 @@ int int_flux[1000];
 float weighted_flux[1000];
 int j=0;
 float y=0.10;
-FILE *fptr;
-fptr = fopen("cosmics.txt", "w");
 
 while (y<=100)
 {
 int_flux[j] = i[j]/i[k-1];
 weighted_flux[j] = i[j]/i[k-1];
-int z=0;
-while (z<int_flux[j])
-{
-data << energy[j]*1000 << "\n";//Stores energy in MeV
-putw(energy[j]*1000, fptr);//Stores data in a format readable by getw command
-z++;
-}
 y=y+0.10;
 j++;
 }
-data.close();
-fclose(fptr);
 
 TCanvas *c1 = new TCanvas();
-//TGraph *gr = new TGraph (entries,energy,i);
 TGraph *gr = new TGraph (entries,energy,weighted_flux);
 gr->Draw();
 c1->SetLogx();
@@ -60,4 +46,5 @@ c1->SetLogy();
 gr->SetTitle("");
 gr->GetXaxis()->SetTitle("E (GeV)");
 gr->GetYaxis()->SetTitle("Muon flux (m^{-2}sec^{-1}sr^{-1} (GeV/c)^{-1})");
+
 }
