@@ -1,4 +1,4 @@
-void segment_scan() //Used to be edge_finder
+void segment_scan()
 {
 float v_pos_r6[560],mean_r6[560],rms_r6[560],mp_langau_r6[560],gsigma_langau_r6[560],rms_mean_r6[560],res_langau_r6[560],weight_r6[560],scale_r6[560];
 float v_pos_r5ff[560],mean_r5ff[560],rms_r5ff[560],mp_langau_r5ff[560],gsigma_langau_r5ff[560],rms_mean_r5ff[560],res_langau_r5ff[560],weight_r5ff[560],scale_r5ff[560];
@@ -12,7 +12,7 @@ float v_pos_mainz_r2[11], scale_mainz_r2[11];
 float v_pos_mainz_r3[11], scale_mainz_r3[11];
 float v_pos_mainz_r4[11], scale_mainz_r4[11];
 
-char run_type[] = "0_deg_tilt";
+char run_type[] = "0.2_deg_tilt";
 char weight[] = "_w"; //"_w" for weighted runs, "" for no weight
 
 ifstream infile_r6, infile_r5ff, infile_r4, infile_r3, infile_r2, infile_r1;
@@ -408,12 +408,12 @@ Scale_r1->SetMarkerSize(1.5);
 
 //Scale->Add(Scale_r6,"p");
 Scale->Add(Scale_r5ff,"p");
-Scale->Add(Scale_r4,"p");
-Scale->Add(Scale_r3,"p");
-Scale->Add(Scale_r2,"p");
-Scale->Add(Scale_r1,"p");
+//Scale->Add(Scale_r4,"p");
+//Scale->Add(Scale_r3,"p");
+//Scale->Add(Scale_r2,"p");
+//Scale->Add(Scale_r1,"p");
 Scale->GetXaxis()->SetTitle("Beam Position [mm]");
-Scale->GetYaxis()->SetTitle("Signal ratio (DS ring vs. US ring)");
+Scale->GetYaxis()->SetTitle("Signal ratio");
 Scale->SetTitle("Ratio of signal size in DS Ring vs. US");
 Scale->GetXaxis()->SetLimits(-10,580);
 Scale->GetYaxis()->SetRangeUser(0,4);
@@ -421,12 +421,12 @@ Scale->GetYaxis()->SetRangeUser(0,4);
 c6->SetGridx();
 c6->SetGridy();
 
-/*TF1 *f1 = new TF1("f1","(TMath::Erf((x-[0])/[1]) + 1)/2",400,420);
-f1->SetParameter(0,410);
+TF1 *f1 = new TF1("f1","(TMath::Erf((x-[0])/[1]) + 1)/2",400,420);
+f1->SetParameter(0,409.5);
 f1->SetParameter(1,2);
-Scale->Fit("f1");*/
+Scale->Fit("f1");
 Scale->Draw("A");
-//f1->Draw("lsame");
+f1->Draw("lsame");
 
 //Adding Mainz data to the Scaling plot
 /*TGraph *Scale_mainz_r1 = new TGraph (11,v_pos_mainz_r1,scale_mainz_r1);
@@ -454,11 +454,11 @@ Scale_mainz_r4->SetMarkerSize(1.5);
 Scale->Add(Scale_mainz_r4,"p");*/
 
 //Generating a legend - Used when comparing sims to Mainz data
-//auto legend_Scale = new TLegend(0.6,0.7,0.9,0.9);
-//legend->SetHeader("Data set","C"); // option "C" allows to center the header
-//legend->AddEntry(Scale_r5ff,"Simulation","lep");
-//legend->AddEntry(Scale_mainz_r4,"Mainz data","lep");
-//legend->Draw();
+auto legend_Scale = new TLegend(0.6,0.7,0.9,0.9);
+legend_Scale->SetHeader("Tile Edge Search","C");
+legend_Scale->AddEntry(Scale_r5ff,"R6/R5","lep");
+//legend->AddEntry(Scale_mainz_r5,"Mainz data","lep");
+legend_Scale->Draw();
 
 //..................Printing the plots.................................//
 c1->Print(Form("plots/%s/mean_PE_yield%s.root",run_type,weight));
@@ -466,6 +466,6 @@ c2->Print(Form("plots/%s/langau_PE_yield%s.root",run_type,weight));
 c3->Print(Form("plots/%s/rms_mean%s.root",run_type,weight));
 c4->Print(Form("plots/%s/langau_res%s.root",run_type,weight));
 c5->Print(Form("plots/%s/weight%s.root",run_type,weight));
-c6->Print(Form("plots/%s/scale%s.root",run_type,weight));
+c6->Print(Form("plots/%s/scale%s_R6_R5.root",run_type,weight));
 
 }
