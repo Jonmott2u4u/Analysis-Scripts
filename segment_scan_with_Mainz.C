@@ -1,4 +1,4 @@
-void segment_scan()
+void segment_scan_with_Mainz()
 {
 float v_pos_r6[560],mean_r6[560],rms_r6[560],mp_langau_r6[560],gsigma_langau_r6[560],rms_mean_r6[560],res_langau_r6[560],weight_r6[560],scale_r6[560];
 float v_pos_r5ff[560],mean_r5ff[560],rms_r5ff[560],mp_langau_r5ff[560],gsigma_langau_r5ff[560],rms_mean_r5ff[560],res_langau_r5ff[560],weight_r5ff[560],scale_r5ff[560];

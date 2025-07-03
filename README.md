@@ -1,6 +1,20 @@
 # Analysis-Scripts
 Collection of analysis scripts I use
 
+# LangauFitExtract.C & ExtractScanResults.C
+Creates Langau fits of the simulated spectra from MOLLEROptical.
+Each file has the following differences:
+  * ExtractScanResults.C is from an older version that lacked as many scan parameters. Histograms are outputted to the display
+  * LangauFitExtract.C is an updated version designed for newer MOLLEROptical versions. Histos are no longer output to display
+
+# segment_scan.C & segment_scan_with_Mainz.C & data_mover.C
+Plots parameters such as pe yield, rms, etc. from txt files output by LangauFitExtract/ExtractScanResults 
+Fits are performed for certain parameters
+Each file has the following differences:
+  * segment_scan.C is for use with the newer MOLLEROptical versions. Contains fits for determining average pe yield over a detector's active area
+  * with_Mainz is an older version and lacks certain options, but references Mainz 2023 data files for comparison to simulations
+  * data_mover.C was made for creating .csv files from the txt files.
+
 # Mainz-data-analysis.C
 Creates Gaussian and Langau fits of the photoelectron (PE) yield of MOLLER's integrating Cherenkov detectors.
 Data is handled through the following process:
