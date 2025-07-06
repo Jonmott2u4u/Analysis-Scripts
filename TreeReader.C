@@ -27,33 +27,91 @@ void plot_r5_pes_vs_pos() {
         return;
     }
 
-    // Setup TTreeReader
-    TTreeReader reader(MOLLEROptTree);
-    TTreeReaderArray<float> R5TileHitX(reader, "MOLLERGeneralEvent.R5TileHitX");
-    TTreeReaderArray<float> R5TileHitY(reader, "MOLLERGeneralEvent.R5TileHitY");
-    TTreeReaderArray<int> Scint1TrackHit(reader, "MOLLERGeneralEvent.Scint1TrackHit");
-    TTreeReaderArray<int> Scint2TrackHit(reader, "MOLLERGeneralEvent.Scint2TrackHit");
-    TTreeReaderArray<int> R5PEs(reader, "MOLLERGeneralEvent.R5PEs");
+    // Setup TTreeReader //
+    //These readers are used to store the number of entries per position bin (w/ cuts included)
+    TTreeReader reader_entries(MOLLEROptTree);
+    TTreeReaderArray<float> R5TileHitX_ent(reader_entries, "MOLLERGeneralEvent.R5TileHitX");
+    TTreeReaderArray<float> R5TileHitY_ent(reader_entries, "MOLLERGeneralEvent.R5TileHitY");
+    TTreeReaderArray<int> Scint1TrackHit_ent(reader_entries, "MOLLERGeneralEvent.Scint1TrackHit");
+    TTreeReaderArray<int> Scint2TrackHit_ent(reader_entries, "MOLLERGeneralEvent.Scint2TrackHit");
+    TTreeReaderArray<int> R5AdjacentCutQuartzTrackHit_ent(reader_entries, "MOLLERGeneralEvent.R5AdjacentCutQuartzTrackHit");
+    TTreeReaderArray<int> R5SoloCutQuartzTrackHit_ent(reader_entries, "MOLLERGeneralEvent.R5SoloCutQuartzTrackHit");
+    //These readers are used for the "xy" histograms.
+    TTreeReader reader_main(MOLLEROptTree);
+    TTreeReaderArray<float> R5TileHitX(reader_main, "MOLLERGeneralEvent.R5TileHitX");
+    TTreeReaderArray<float> R5TileHitY(reader_main, "MOLLERGeneralEvent.R5TileHitY");
+    TTreeReaderArray<int> Scint1TrackHit(reader_main, "MOLLERGeneralEvent.Scint1TrackHit");
+    TTreeReaderArray<int> Scint2TrackHit(reader_main, "MOLLERGeneralEvent.Scint2TrackHit");
+    TTreeReaderArray<int> R5AdjacentCutQuartzTrackHit(reader_main, "MOLLERGeneralEvent.R5AdjacentCutQuartzTrackHit");
+    TTreeReaderArray<int> R5SoloCutQuartzTrackHit(reader_main, "MOLLERGeneralEvent.R5SoloCutQuartzTrackHit");
+    TTreeReaderArray<int> R5PEs(reader_main, "MOLLERGeneralEvent.R5PEs");
 
-    // Prepare 2D histogram
-    TH2F *h_xy = new TH2F("h_xy", "R5TileHitY vs R5TileHitX;X position;Y position",
-                          10, -1.5, 1.5,  // X-axis binning
-                          10, -25, 25);   // Y-axis binning
+    // Prepare 2D histograms //
+    //The "entry" plots store the number of hits per bin
+    TH2F *h_entries = new TH2F("h_entries", "Entries per tile hit position",
+                        8, -4, 4,  // X-axis binning
+                        16, 18, 34);   // Y-axis binning
+    TH2F *h_entries_adj = new TH2F("h_entries", "Entries per tile hit position",
+                        8, -4, 4,  // X-axis binning
+                        16, 18, 34);   // Y-axis binning
+    TH2F *h_entries_solo = new TH2F("h_entries", "Entries per tile hit position",
+                        8, -4, 4,  // X-axis binning
+                        16, 18, 34);   // Y-axis binning
+    //The "xy" plots store the average pe yield per bin
+    TH2F *h_xy = new TH2F("h_xy", "R5TileHitY vs R5TileHitX w/ scint cut;X position;Y position",
+                        8, -4, 4,  // X-axis binning
+                        16, 18, 34);   // Y-axis binning
+    TH2F *h_xy_adj = new TH2F("h_xy_adj", "R5TileHitY vs R5TileHitX w/ adjacency cut;X position;Y position",
+                        8, -4, 4,  // X-axis binning
+                        16, 18, 34);   // Y-axis binning
+    TH2F *h_xy_solo = new TH2F("h_xy_solo", "R5TileHitY vs R5TileHitX w/ solocut;X position;Y position",
+                        8, -4, 4,  // X-axis binning
+                        16, 18, 34);   // Y-axis binning
 
     Long64_t event_count = 0;
 
+    //Set the shift so that (shift + the x/y start bin above) = 1
+    float x_shift = 5, y_shift = -17;
+
+
     // Loop over entries
-    while (reader.Next()) {
+    while (reader_entries.Next()) {
         event_count++;
 
+        //Loops over the events once to create the weight factor per bin. Weight factor is = events per bin
+        for (size_t i = 0; i < R5TileHitX_ent.GetSize(); ++i) {
+            int scint1 = Scint1TrackHit_ent[i];
+            int scint2 = Scint2TrackHit_ent[i];
+            int adj = R5AdjacentCutQuartzTrackHit_ent[i];
+            int solo = R5SoloCutQuartzTrackHit_ent[i];
+            if (scint1 && scint2) {
+                float x = R5TileHitX_ent[i];
+                float y = R5TileHitY_ent[i];
+                h_entries->Fill(x, y, 1);
+                if (adj) h_entries_adj->Fill(x, y, 1);
+                if (solo) h_entries_solo->Fill(x, y, 1);
+                // cout << x << " " << y << " " << PEweight << endl;
+            }
+        }
+    }
+
+    while (reader_main.Next()) {
+        //Loops over the events again to find the average pe yield per bin. Uses the weight factor defined above (h_entries*)
         for (size_t i = 0; i < R5TileHitX.GetSize(); ++i) {
             int scint1 = Scint1TrackHit[i];
             int scint2 = Scint2TrackHit[i];
+            int adj = R5AdjacentCutQuartzTrackHit[i];
+            int solo = R5SoloCutQuartzTrackHit[i];
             if (scint1 && scint2) {
                 float x = R5TileHitX[i];
                 float y = R5TileHitY[i];
-                int PEweight = R5PEs[i];
-                h_xy->Fill(x, y, PEweight);
+                int PE = R5PEs[i];
+                float weight = 1./h_entries->GetBinContent(x+x_shift,y+y_shift);
+                h_xy->Fill(x, y, PE*weight);
+                //cout << "x: " << x << "      y: " << y << endl;
+                //cout << "PEs: " << PE << "      weight: " << weight << "        BinContent: " << h_xy->GetBinContent(x+x_shift,y+y_shift) << endl;
+                if (adj) h_xy_adj->Fill(x, y, PE/h_entries_adj->GetBinContent(x+x_shift,y+y_shift));
+                if (solo) h_xy_solo->Fill(x, y, PE/h_entries_solo->GetBinContent(x+x_shift,y+y_shift));
                 // cout << x << " " << y << " " << PEweight << endl;
             }
         }
@@ -61,11 +119,22 @@ void plot_r5_pes_vs_pos() {
 
     cout << "Total processed events: " << event_count << endl;
 
-    // Draw histogram
-    TCanvas *c1 = new TCanvas("c1", "R5 Tile Hit Map", 900, 700);
+    // Draw and save histograms
+    TCanvas *c1 = new TCanvas("c1", "R5 Tile Hit Map w/ scint cut", 900, 700);
     h_xy->Draw("COLZ");
+    c1->SaveAs("plots/ScintCut_R5TileHitXY_PE_heatmap.root");
+    c1->SaveAs("plots/ScintCut_R5TileHitXY_PE_heatmap.png");
+    c1->Close();
 
-    // Optionally save canvas
-    c1->SaveAs("R5TileHitXY_PE_heatmap.root");
-    c1->SaveAs("R5TileHitXY_PE_heatmap.png");
+    TCanvas *c2 = new TCanvas("c2", "R5 Tile Hit Map w/ adjacency cut", 900, 700);
+    h_xy_adj->Draw("COLZ");
+    c2->SaveAs("plots/AdjCut_R5TileHitXY_PE_heatmap.root");
+    c2->SaveAs("plots/AdjCut_R5TileHitXY_PE_heatmap.png");
+    c2->Close();
+
+    TCanvas *c3 = new TCanvas("c3", "R5 Tile Hit Map w/ solo cut", 900, 700);
+    h_xy_solo->Draw("COLZ");
+    c3->SaveAs("plots/SoloCut_R5TileHitXY_PE_heatmap.root");
+    c3->SaveAs("plots/SoloCut_R5TileHitXY_PE_heatmap.png");
+    c3->Close();
 }
