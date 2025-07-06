@@ -122,18 +122,21 @@ void plot_r5_pes_vs_pos() {
     // Draw and save histograms
     TCanvas *c1 = new TCanvas("c1", "R5 Tile Hit Map w/ scint cut", 900, 700);
     h_xy->Draw("COLZ");
+    h_xy->GetZaxis()->SetRangeUser(0,45);
     c1->SaveAs("plots/ScintCut_R5TileHitXY_PE_heatmap.root");
     c1->SaveAs("plots/ScintCut_R5TileHitXY_PE_heatmap.png");
     c1->Close();
 
     TCanvas *c2 = new TCanvas("c2", "R5 Tile Hit Map w/ adjacency cut", 900, 700);
     h_xy_adj->Draw("COLZ");
+    h_xy_adj->GetZaxis()->SetRangeUser(0,45);
     c2->SaveAs("plots/AdjCut_R5TileHitXY_PE_heatmap.root");
     c2->SaveAs("plots/AdjCut_R5TileHitXY_PE_heatmap.png");
     c2->Close();
 
     TCanvas *c3 = new TCanvas("c3", "R5 Tile Hit Map w/ solo cut", 900, 700);
     h_xy_solo->Draw("COLZ");
+    h_xy_solo->GetZaxis()->SetRangeUser(0,45);
     c3->SaveAs("plots/SoloCut_R5TileHitXY_PE_heatmap.root");
     c3->SaveAs("plots/SoloCut_R5TileHitXY_PE_heatmap.png");
     c3->Close();
